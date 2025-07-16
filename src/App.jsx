@@ -47,4 +47,20 @@ function App() {
         )}
       </div>
 
-      <form onSubmit={
+      <form onSubmit={handleSubmit} style={{ marginTop: "1rem", display: "flex" }}>
+        <input
+          type="text"
+          placeholder="Type your message..."
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          style={{ flex: 1, padding: "0.5rem" }}
+        />
+        <button type="submit" style={{ padding: "0.5rem 1rem", marginLeft: "0.5rem" }}>
+          Send
+        </button>
+      </form>
+    </div>
+  );
+}
+
+export default App;
