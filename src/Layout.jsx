@@ -1,41 +1,35 @@
 // src/Layout.jsx
 import React from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useParams } from "react-router-dom";
 import "./Layout.css";
+import { useChannelMessages } from "./state/channelMessages";
+import Chat from "./Chat";
 
-export default function Layout() {
+const Layout = () => {
+  const { channelName } = useParams();
+  const { messages, sendMessage } = useChannelMessages(channelName);
+
   const channels = ["general", "memes", "support"];
 
   return (
-    <div style={{ display: "flex", height: "100vh", fontFamily: "Arial" }}>
-      <div style={{ width: "200px", backgroundColor: "#2f3136", color: "white", padding: "10px" }}>
-        <h3>Channels</h3>
-        {channels.map((channel) => (
-          <div key={channel}>
-            <Link
-              to={`/channel/${channel}`}
-              style={{ color: "white", textDecoration: "none", display: "block", padding: "5px 0" }}
-            >
-              #{channel}
-            </Link>
-          </div>
-        ))}
+    <div className="flex h-screen">
+      <div className="w-1/4 bg-gray-200 p-4">
+        <h2 className="text-xl font-bold mb-4">Channels</h2>
+        <ul>
+          {channels.map((channel) => (
+            <li key={channel}>
+              <Link to={`/${channel}`} className="block py-2 hover:underline">
+                #{channel}
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
-
-      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <div style={{ backgroundColor: "#202225", color: "white", padding: "10px" }}>
-          <h2>Welcome to Chora Chat!</h2>
-        </div>
-        <div style={{ flex: 1, padding: "10px", backgroundColor: "#f2f3f5" }}>
-          <Outlet />
-        </div>
-      </div>
-
-      <div style={{ width: "200px", backgroundColor: "#2f3136", color: "white", padding: "10px" }}>
-        <h3>Online</h3>
-        <p>Franta</p>
-        <p>Petr</p>
+      <div className="flex flex-col w-3/4 p-4">
+        <Chat messages={messages} sendMessage={sendMessage} />
       </div>
     </div>
   );
-}
+};
+
+export default Layout;

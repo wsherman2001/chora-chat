@@ -1,49 +1,43 @@
 // src/Chat.jsx
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 
-export default function Chat() {
-  const { channelId } = useParams();
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState("");
+const Chat = ({ messages, sendMessage }) => {
+  const [text, setText] = useState("");
 
   const handleSend = () => {
-    if (input.trim()) {
-      setMessages([...messages, { text: input, time: new Date().toLocaleTimeString() }]);
-      setInput("");
+    if (text.trim()) {
+      sendMessage(text.trim());
+      setText("");
     }
   };
 
   return (
-    <div>
-      <h3>#{channelId}</h3>
-      <div
-        style={{
-          height: "400px",
-          backgroundColor: "white",
-          padding: "10px",
-          overflowY: "auto",
-          border: "1px solid #ccc",
-          marginBottom: "10px",
-        }}
-      >
-        {messages.map((msg, idx) => (
-          <div key={idx} style={{ backgroundColor: "#e3e3e3", padding: "5px", margin: "5px 0", borderRadius: "5px" }}>
-            <strong>You</strong> [{msg.time}]: {msg.text}
+    <div className="flex flex-col h-full">
+      <div className="flex-1 overflow-y-auto mb-4">
+        {messages.map((msg, index) => (
+          <div key={index} className="mb-2">
+            <span className="text-gray-800">{msg.text}</span>{" "}
+            <span className="text-gray-400 text-sm">
+              ({new Date(msg.timestamp).toLocaleTimeString()})
+            </span>
           </div>
         ))}
       </div>
-      <input
-        type="text"
-        placeholder={`Message #${channelId}`}
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={(e) => e.key === "Enter" && handleSend()}
-        style={{ width: "80%", padding: "8px" }}
-      />
-      <button onClick={handleSend} style={{ padding: "8px 12px", marginLeft: "5px" }}>
-        Send
-      </button>
+      <div className="flex">
+        <input
+          type="text"
+          className="flex-1 border p-2"
+          placeholder="Type a message..."
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSend()}
+        />
+        <button onClick={handleSend} className="ml-2 px-4 py-2 border">
+          Send
+        </button>
+      </div>
     </div>
   );
-}
+};
+
+export default Chat;
