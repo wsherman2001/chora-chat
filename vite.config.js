@@ -1,10 +1,12 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { resolve } from 'path'
 
 export default defineConfig({
-  root: ".", // kořen je aktuální složka (tam musí být index.html)
-  build: {
-    outDir: "dist",
-  },
   plugins: [react()],
+  build: {
+    rollupOptions: {
+      input: resolve(__dirname, 'public/index.html')
+    }
+  }
 })
