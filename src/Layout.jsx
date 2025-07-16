@@ -1,10 +1,23 @@
 // src/Layout.jsx
-import React from "react";
+import React, { useState } from "react";
 
 const Layout = () => {
+  const [messages, setMessages] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+
+  const handleSend = () => {
+    if (inputValue.trim() === "") return;
+    setMessages((prev) => [...prev, inputValue.trim()]);
+    setInputValue("");
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") handleSend();
+  };
+
   return (
     <div style={{ display: "flex", height: "100vh" }}>
-      {/* Levý panel: Kanály */}
+      {/* Left panel: Channels */}
       <aside
         style={{
           width: "200px",
@@ -13,15 +26,15 @@ const Layout = () => {
           padding: "10px",
         }}
       >
-        <h3>Kanály</h3>
+        <h3>Channels</h3>
         <ul style={{ listStyleType: "none", padding: 0 }}>
-          <li># obecný</li>
-          <li># memy</li>
-          <li># technika</li>
+          <li># general</li>
+          <li># memes</li>
+          <li># tech</li>
         </ul>
       </aside>
 
-      {/* Hlavní obsah: Chat */}
+      {/* Main content */}
       <main style={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
         <header
           style={{
@@ -33,6 +46,7 @@ const Layout = () => {
           <h1>Chora Chat</h1>
         </header>
 
+        {/* Chat messages */}
         <section
           style={{
             flexGrow: 1,
@@ -42,9 +56,14 @@ const Layout = () => {
             overflowY: "auto",
           }}
         >
-          <p>Sem přijde obsah chatu...</p>
+          {messages.map((msg, index) => (
+            <div key={index} style={{ marginBottom: "6px" }}>
+              <span style={{ color: "#00b0f4" }}>You:</span> {msg}
+            </div>
+          ))}
         </section>
 
+        {/* Message input */}
         <footer
           style={{
             padding: "10px",
@@ -53,7 +72,10 @@ const Layout = () => {
         >
           <input
             type="text"
-            placeholder="Napiš zprávu..."
+            placeholder="Type your message..."
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown={handleKeyPress}
             style={{
               width: "100%",
               padding: "8px",
@@ -62,10 +84,25 @@ const Layout = () => {
               outline: "none",
             }}
           />
+          <button
+            onClick={handleSend}
+            style={{
+              marginTop: "8px",
+              padding: "8px 16px",
+              backgroundColor: "#7289da",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              float: "right",
+            }}
+          >
+            Send
+          </button>
         </footer>
       </main>
 
-      {/* Pravý panel: Aktivní členové */}
+      {/* Right panel: Online users */}
       <aside
         style={{
           width: "200px",
