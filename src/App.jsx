@@ -1,9 +1,8 @@
-import React from 'react';
-
-function App() {
+export default function App() {
   return (
-    <h1>Welcome to Chora Chat!</h1>
-  );
+    <div>
+      <h1>Welcome to Chora Chat!</h1>
+      <p>Chat UI will go here.</p>
+    </div>
+  )
 }
-
-export default App;
