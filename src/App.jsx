@@ -1,20 +1,16 @@
-// src/App.jsx
-import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Layout from "./Layout";
-import Chat from "./Chat";
+import React from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Chat from './Chat'
+import Layout from './Layout'
 
-const App = () => {
+export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Navigate to="/general" />} />
-        <Route path="/:channelName" element={<Layout />}>
-          <Route index element={<Chat />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  );
-};
-
-export default App;
+    <Router>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Chat />} />
+        </Routes>
+      </Layout>
+    </Router>
+  )
+}
